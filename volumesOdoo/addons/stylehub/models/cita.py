@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from datetime import timedelta # Herramienta de Python para sumar/restar horas a una fecha
+from odoo.exceptions import ValidationError # Para lanzar errores de validación
 
 class StylehubCita(models.Model):
     _name = 'stylehub.cita'
@@ -14,6 +16,19 @@ class StylehubCita(models.Model):
     # CAMPOS BÁSICOS
     fecha_inicio = fields.Datetime(string='Fecha y Hora Inicio', required=True)
     
+    # CAMPOS CALCULADOS
+    fecha_fin = fields.Datetime(
+        string='Fecha Fin', 
+        compute='_compute_totales', 
+        store=True # Significa que lo calcule y que lo guarde en la base de datos
+    )
+
+    importe_total = fields.Float(
+        string='Total a Pagar', 
+        compute='_compute_totales', 
+        store=True
+    )
+
     # ESTADO (En el enunciado pide el estado de las citas: Borrador, Confirmada...)
     state = fields.Selection([
         ('borrador', 'Borrador'),
@@ -29,6 +44,52 @@ class StylehubCita(models.Model):
     # hace así, lo que va a hacer es cambiar el precio del servicio en el catálogo general.
     
     lineas_ids = fields.One2many('stylehub.cita.linea', 'cita_id', string='Servicios')
+
+    # CALCULOS DE LOS CAMPOS
+    # @api.depends le dice a Odoo: "Vigila estos campos. Si cambian, recalcula la función".
+    @api.depends('fecha_inicio', 'lineas_ids', 'lineas_ids.duracion', 'lineas_ids.precio')
+    def _compute_totales(self):
+        for cita in self:
+            # Si no hay fecha de inicio, no podemos calcular el fin
+            if not cita.fecha_inicio:
+                cita.fecha_fin = False
+                cita.importe_total = 0.0
+                continue
+
+            # Sumamos la duración de todas las líneas
+            horas_totales = sum(linea.duracion for linea in cita.lineas_ids)
+            
+            # Sumamos el precio de todas las líneas
+            cita.importe_total = sum(linea.precio for linea in cita.lineas_ids)
+            
+            # Calculamos la Fecha Fin
+            # Usamos timedelta para sumar "horas" a una fecha
+            cita.fecha_fin = cita.fecha_inicio + timedelta(hours=horas_totales)
+
+    # VALIDACIONES
+    # @api.constrains le dice a Odoo: "Cada vez que estos campos cambien, ejecuta esta función para validar".
+    @api.constrains('estilista_id', 'fecha_inicio', 'fecha_fin')
+
+    # Función para comprobar citas solapadas
+    def _check_solapamiento(self):
+        for cita in self:
+            # Si la cita está cancelada, no importa si se solapa
+            if cita.state == 'cancelada':
+                continue
+
+            # Buscamos en la base de datos si existe otra cita
+            citas_superpuestas = self.search([
+                ('id', '!=', cita.id),             # que no sea esta misma
+                ('estilista_id', '=', cita.estilista_id.id), # del mismo estilista
+                ('state', '!=', 'cancelada'),      # que no esté cancelada
+                # que coincida en el tiempo (Lógica de solapamiento)
+                ('fecha_inicio', '<', cita.fecha_fin),
+                ('fecha_fin', '>', cita.fecha_inicio)
+            ])
+            
+            if citas_superpuestas:
+                # Si encontramos alguna cita que se solapa, lanzamos un error
+                raise ValidationError(f"¡El estilista {cita.estilista_id.name} ya tiene una cita en ese horario!")
 
 # Tabla intermedia para los servicios en una cita
 class StylehubCitaLinea(models.Model):
