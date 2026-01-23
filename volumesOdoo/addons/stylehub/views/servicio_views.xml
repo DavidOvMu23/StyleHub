@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Este archivo define las vistas (lista y formulario), la acción
+            que abre esas vistas y los elementos de menú para acceder a ellas-->
+    <record id="view_stylehub_servicio_list" model="ir.ui.view">
+
+        <!-- Lista para mostrar varios registros de servicios.-->
+        <field name="name">stylehub.servicio.list</field>
+        <field name="model">stylehub.servicio</field>
+        <field name="arch" type="xml">
+            <list>
+                <!-- Columnas para mostrar en la vista de lista -->
+                <field name="name"/>
+                <field name="precio"/>
+                <field name="duracion"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para crear/editar un servicio-->
+    <record id="view_stylehub_servicio_form" model="ir.ui.view">
+        <field name="name">stylehub.servicio.form</field>
+        <field name="model">stylehub.servicio</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <!-- Campo: nombre del servicio -->
+                            <field name="name"/>
+                            <!-- Campo: precio del servicio -->
+                            <field name="precio"/>
+                        </group>
+                        <group>
+                            <!-- Campo: duración estimada del servicio -->
+                            <field name="duracion"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+        <!-- Acción que abre la vista de `stylehub.servicio`
+            - `res_model`: modelo que se abrirá
+            - `view_mode`: orden de vistas que el cliente puede alternar (lista, formulario)
+            - Esta acción se referencia desde el menú para conectar la vista al menú
+        -->
+    <record id="action_stylehub_servicio" model="ir.actions.act_window">
+        <field name="name">Servicios</field>
+        <field name="res_model">stylehub.servicio</field>
+        <field name="view_mode">list,form</field> 
+    </record>
+
+        <!-- Menú principal para StyleHub
+            - `menuitem` crea entradas en la barra de menú de Odoo.
+            - `sequence` controla el orden relativo de los elementos de menú.
+            - `parent` indica el padre en el árbol de menús; si se omite, es top-level.
+        -->
+    <menuitem id="menu_stylehub_root" name="StyleHub" sequence="10"/>
+
+    <!-- Submenú para configuración -->
+    <menuitem id="menu_stylehub_config" name="Configuración" parent="menu_stylehub_root" sequence="100"/>
+
+    <!-- Menú para acceder a los servicios -->
+    <menuitem id="menu_stylehub_servicio" name="Servicios" parent="menu_stylehub_config" action="action_stylehub_servicio" sequence="10"/>
+
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stylehub_servicio,stylehub.servicio.access,model_stylehub_servicio,base.group_user,1,1,1,1
+access_stylehub_estilista,stylehub.estilista.access,model_stylehub_estilista,base.group_user,1,1,1,1
+access_stylehub_cita,stylehub.cita.access,model_stylehub_cita,base.group_user,1,1,1,1
+access_stylehub_cita_linea,stylehub.cita.linea.access,model_stylehub_cita_linea,base.group_user,1,1,1,1
