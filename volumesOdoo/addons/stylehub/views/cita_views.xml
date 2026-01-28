@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Este archivo define las vistas calendario, lista y formulario -->
+
+    <!-- Vista de calendario para gestionar citas -->
+    <record id="view_stylehub_cita_calendar" model="ir.ui.view">
+        <field name="name">stylehub.cita.calendar</field>
+        <field name="model">stylehub.cita</field>
+        <field name="arch" type="xml">
+
+            <!-- Evento de calendario para mostrar citas -->
+            <calendar string="Citas" date_start="fecha_inicio" date_stop="fecha_fin" color="estilista_id" mode="week" quick_create="0" event_open_popup="true">
+                <field name="cliente_id"/>
+                <field name="importe_total" widget="monetary"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Vista de lista -->
+    <record id="view_stylehub_cita_list" model="ir.ui.view">
+        <field name="name">stylehub.cita.list</field>
+        <field name="model">stylehub.cita</field>
+        <field name="arch" type="xml">
+
+            <!-- Lista para mostrar varias citas -->
+            <list decoration-info="state == 'borrador'" decoration-success="state == 'confirmada'" decoration-muted="state == 'cancelada'">
+                <field name="fecha_inicio"/>
+                <field name="cliente_id"/>
+                <field name="estilista_id"/>
+                <field name="importe_total" sum="Total Ventas"/>
+                <field name="state" widget="badge" decoration-success="state == 'realizada'" decoration-info="state == 'confirmada'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para crear/editar una cita -->
+    <record id="view_stylehub_cita_form" model="ir.ui.view">
+        <field name="name">stylehub.cita.form</field>
+        <field name="model">stylehub.cita</field>
+        <field name="arch" type="xml">     
+            <form>
+                <header>
+                    <!-- Botones según el estado de la cita -->
+                    <button name="action_confirmar" string="Confirmar Cita" type="object" class="oe_highlight" invisible="state != 'borrador'"/>
+                    <button name="action_realizar" string="Finalizar Trabajo" type="object" class="oe_highlight" invisible="state != 'confirmada'"/>
+                    <button name="action_cancelar" string="Cancelar" type="object" invisible="state in ('realizada', 'cancelada')"/>
+                    
+                    <!-- Barra de estado visual -->
+                    <field name="state" widget="statusbar" statusbar_visible="borrador,confirmada,realizada"/>
+                </header>
+
+                <sheet>
+                    <!-- Título: muestra el cliente principal de la cita -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="cliente_id" placeholder="Selecciona Cliente..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <!-- Selección de estilista responsable -->
+                            <field name="estilista_id"/>
+                        </group>
+                        <group>
+                            <!-- Fecha y hora de inicio y fin de la cita -->
+                            <field name="fecha_inicio"/>
+                            <field name="fecha_fin" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Servicios">
+                            <!-- Líneas de servicios relacionados con la cita -->
+                            <field name="lineas_ids">
+                                <list editable="bottom">
+                                    <field name="servicio_id"/>
+                                    <field name="duracion" sum="Total Horas"/>
+                                    <field name="precio" sum="Total Precio"/>
+                                </list>
+                            </field>
+
+                            <!-- Subtotal / total de la cita, alineado a la derecha -->
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="importe_total" widget="monetary" decoration-bf="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción que abre la agenda -->
+    <record id="action_stylehub_cita" model="ir.actions.act_window">
+        <field name="name">Agenda de Citas</field>
+        <field name="res_model">stylehub.cita</field>
+        <field name="view_mode">calendar,list,form</field>
+    </record>
+
+    <!-- Menú para acceder a la agenda de citas -->
+    <menuitem id="menu_stylehub_cita" name="Agenda" parent="menu_stylehub_root" action="action_stylehub_cita" sequence="5"/>
+
+</odoo>

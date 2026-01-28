@@ -90,6 +90,19 @@ class StylehubCita(models.Model):
             if citas_superpuestas:
                 # Si encontramos alguna cita que se solapa, lanzamos un error
                 raise ValidationError(f"¡El estilista {cita.estilista_id.name} ya tiene una cita en ese horario!")
+    
+    # ACCIONES PARA CAMBIAR ESTADO
+    def action_confirmar(self):
+        for rec in self:
+            rec.state = 'confirmada'
+
+    def action_realizar(self):
+        for rec in self:
+            rec.state = 'realizada'
+
+    def action_cancelar(self):
+        for rec in self:
+            rec.state = 'cancelada'
 
 # Tabla intermedia para los servicios en una cita
 class StylehubCitaLinea(models.Model):

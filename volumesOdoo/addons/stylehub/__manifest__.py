@@ -1,10 +1,11 @@
 {
     'name': 'StyleHub',
 
-    'depends': ['base'],  # Dependemos del módulo base porque usaremos Clientes (res.partner)
+    'depends': ['base', 'contacts'],  # Dependemos del módulo base y de Contacts para clientes
     'data': [
         'security/ir.model.access.csv', # Permisos de acceso a los modelos
-        'views/servicio_views.xml',     # Vistas para el modelo Servicio
+        'views/servicio_views.xml',
+        'views/cita_views.xml',
     ],
     'installable': True,
     'application': True,
