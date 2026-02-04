@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_stylehub_estilista_tree" model="ir.ui.view">
+        <field name="name">stylehub.estilista.tree</field>
+        <field name="model">stylehub.estilista</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_stylehub_estilista_form" model="ir.ui.view">
+        <field name="name">stylehub.estilista.form</field>
+        <field name="model">stylehub.estilista</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" invisible="active"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="active" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stylehub_estilista" model="ir.actions.act_window">
+        <field name="name">Estilistas</field>
+        <field name="res_model">stylehub.estilista</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_stylehub_estilista" 
+              name="Estilistas" 
+              parent="menu_stylehub_config" 
+              action="action_stylehub_estilista" 
+              sequence="20"/>
+
+</odoo>
