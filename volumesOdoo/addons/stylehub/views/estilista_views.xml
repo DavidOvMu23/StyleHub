@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
+    <!-- Vista tipo lista de estilistas -->
     <record id="view_stylehub_estilista_tree" model="ir.ui.view">
         <field name="name">stylehub.estilista.tree</field>
         <field name="model">stylehub.estilista</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <!-- Widget boolean_toggle: permite activar/desactivar con un switch-->
                 <field name="active" widget="boolean_toggle"/>
             </list>
         </field>
     </record>
 
+    <!-- Vista de formulario para crear/editar estilistas -->
     <record id="view_stylehub_estilista_form" model="ir.ui.view">
         <field name="name">stylehub.estilista.form</field>
         <field name="model">stylehub.estilista</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <!-- Widget web_ribbon: muestra una cinta visual cuando el registro está archivado (me lo ha recomendado el chat)-->
                     <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" invisible="active"/>
                     <group>
                         <field name="name"/>
@@ -28,12 +32,14 @@
         </field>
     </record>
 
+    <!-- Acción de ventana para abrir las vistas de estilistas -->
     <record id="action_stylehub_estilista" model="ir.actions.act_window">
         <field name="name">Estilistas</field>
         <field name="res_model">stylehub.estilista</field>
         <field name="view_mode">list,form</field>
     </record>
 
+    <!-- Menú para acceder a los estilistas -->
     <menuitem id="menu_stylehub_estilista" 
               name="Estilistas" 
               parent="menu_stylehub_config" 

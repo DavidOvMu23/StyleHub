@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-        <!-- Este archivo define las vistas (lista y formulario), la acción
-            que abre esas vistas y los elementos de menú para acceder a ellas-->
+    <!-- Este archivo define las vistas (lista y formulario), la acción -->
+    <!-- que abre esas vistas y los elementos de menú para acceder a ellas-->
+
+    <!-- Vista tipo lista: muestra múltiples servicios en filas -->
     <record id="view_stylehub_servicio_list" model="ir.ui.view">
 
         <!-- Lista para mostrar varios registros de servicios.-->
@@ -18,13 +20,16 @@
         </field>
     </record>
 
-    <!-- Vista de formulario-->
+    <!-- Vista de formulario: permite crear o editar un servicio -->
     <record id="view_stylehub_servicio_form" model="ir.ui.view">
         <field name="name">stylehub.servicio.form</field>
         <field name="model">stylehub.servicio</field>
         <field name="arch" type="xml">
+            <!-- Formulario para crear o editar un servicio.-->
             <form>
+            <!-- el sheet organiza el formulario en secciones, aquí se agrupan los campos relacionados con el servicio -->
                 <sheet>
+                    <!-- agrupamos los campos relacionados con el servicio -->
                     <group>
                         <group>
                             <!-- Campo: nombre del servicio -->
@@ -42,14 +47,15 @@
         </field>
     </record>
 
-        <!-- Acción que abre la vista de `stylehub.servicio` se referencia desde el menú para conectar la vista al menú -->
+    <!-- Acción que abre la vista de `stylehub.servicio` se referencia desde el menú para conectar la vista al menú -->
+    <!-- Acción de ventana: enlaza el modelo con sus vistas (lista y formulario) -->
     <record id="action_stylehub_servicio" model="ir.actions.act_window">
         <field name="name">Servicios</field>
         <field name="res_model">stylehub.servicio</field>
         <field name="view_mode">list,form</field> 
     </record>
 
-        <!-- Menú principal para StyleHub -->
+    <!-- Menú principal para StyleHub -->
     <menuitem id="menu_stylehub_root" name="StyleHub" sequence="10"/>
 
     <!-- Submenú para configuración -->

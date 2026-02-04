@@ -7,6 +7,7 @@
         'views/servicio_views.xml',
         'views/estilista_views.xml',
         'views/cita_views.xml',
+        'views/cliente_views.xml',
     ],
     'installable': True,
     'application': True,

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista heredada del formulario de contactos para mostrar info de StyleHub -->
+    <record id="view_partner_form_vip" model="ir.ui.view">
+        <field name="name">res.partner.form.vip</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Herencia de vista: insertamos contenido dentro de la sección principal del formulario (me ha ayudado el chat) -->
+            <xpath expr="//sheet" position="inside">
+                <!-- Widget web_ribbon: resalta visualmente a los clientes VIP (no sabia que existía esa propiedad se la pregunté al chat)-->
+                <widget name="web_ribbon" title="CLIENTE VIP" bg_color="bg-warning" invisible="not es_vip"/>
+            </xpath>
+
+            <!-- Herencia de vista: añadimos una pestaña nueva al notebook de contactos -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Peluquería StyleHub">
+                    <field name="cita_ids" readonly="1">
+                        <list>
+                            <field name="fecha_inicio"/>
+                            <field name="estilista_id"/>
+                            <field name="state"/>
+                            <field name="importe_total"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

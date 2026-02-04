@@ -10,8 +10,10 @@
         <field name="arch" type="xml">
 
             <!-- Evento de calendario para mostrar citas -->
+            <!-- El calendario usa date_start/date_stop para hacer bloques de tiempo -->
             <calendar string="Citas" date_start="fecha_inicio" date_stop="fecha_fin" color="estilista_id" mode="week" quick_create="0" event_open_popup="true">
                 <field name="cliente_id"/>
+                <!-- Widget monetary: formateamos el importe con la moneda de la empresa (me daba error al hacerlo de otra forma y el chat me lo recomendó así, el monetary sirve para formatear la moneda con la configuración de la comañia así también se mejora la presentación) -->
                 <field name="importe_total" widget="monetary"/>
                 <field name="state"/>
             </calendar>
@@ -19,6 +21,7 @@
     </record>
 
     <!-- Vista de lista -->
+    <!-- Lista para consultar citas con por estado -->
     <record id="view_stylehub_cita_list" model="ir.ui.view">
         <field name="name">stylehub.cita.list</field>
         <field name="model">stylehub.cita</field>
@@ -30,12 +33,14 @@
                 <field name="cliente_id"/>
                 <field name="estilista_id"/>
                 <field name="importe_total" sum="Total Ventas"/>
+                <!-- Widget badge: muestra el estado con una etiqueta -->
                 <field name="state" widget="badge" decoration-success="state == 'realizada'" decoration-info="state == 'confirmada'"/>
             </list>
         </field>
     </record>
 
     <!-- Vista de formulario para crear/editar una cita -->
+    <!-- Formulario principal con botones de flujo de trabajo -->
     <record id="view_stylehub_cita_form" model="ir.ui.view">
         <field name="name">stylehub.cita.form</field>
         <field name="model">stylehub.cita</field>
@@ -47,7 +52,7 @@
                     <button name="action_realizar" string="Finalizar Trabajo" type="object" class="oe_highlight" invisible="state != 'confirmada'"/>
                     <button name="action_cancelar" string="Cancelar" type="object" invisible="state in ('realizada', 'cancelada')"/>
                     
-                    <!-- Barra de estado visual -->
+                    <!-- Widget statusbar: representa el flujo de estados de la cita -->
                     <field name="state" widget="statusbar" statusbar_visible="borrador,confirmada,realizada"/>
                 </header>
 
@@ -84,6 +89,7 @@
 
                             <!-- Subtotal / total de la cita, alineado a la derecha -->
                             <group class="oe_subtotal_footer oe_right">
+                                <!-- Widget monetary: asegura formato de moneda en el total -->
                                 <field name="importe_total" widget="monetary" decoration-bf="1"/>
                             </group>
                         </page>
@@ -94,6 +100,7 @@
     </record>
 
     <!-- Vista kanban para una representación visual de las citas -->
+    <!-- Kanban: tarjetas agrupadas por estado -->
     <record id="view_stylehub_cita_kanban" model="ir.ui.view">
         <field name="name">stylehub.cita.kanban</field>
         <field name="model">stylehub.cita</field>
@@ -117,6 +124,7 @@
                                     </strong>
                                 </div>
                                 <div class="o_kanban_record_top_right">
+                                    <!-- Widget monetary: muestra el importe con formato monetario -->
                                     <strong><field name="importe_total" widget="monetary"/></strong>
                                 </div>
                             </div>
@@ -131,6 +139,7 @@
                                     <field name="fecha_inicio"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
+                                    <!-- Widget label_selection: etiqueta el estado con estilos por clase -->
                                     <field name="state" widget="label_selection" 
                                            options="{'classes': {'borrador': 'default', 'confirmada': 'info', 'realizada': 'success', 'cancelada': 'danger'}}"/>
                                 </div>
@@ -143,6 +152,7 @@
     </record>
 
     <!-- Acción que abre la agenda -->
+    <!-- Acción de ventana para el modelo de citas -->
     <record id="action_stylehub_cita" model="ir.actions.act_window">
         <field name="name">Agenda de Citas</field>
         <field name="res_model">stylehub.cita</field>
