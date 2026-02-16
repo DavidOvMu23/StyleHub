@@ -15,7 +15,7 @@
                 <!-- Columnas para mostrar en la vista de lista -->
                 <field name="name"/>
                 <field name="precio"/>
-                <field name="duracion"/>
+                <field name="duracion" widget="float_time"/>
             </list>
         </field>
     </record>
@@ -39,7 +39,7 @@
                         </group>
                         <group>
                             <!-- Campo: duración estimada del servicio -->
-                            <field name="duracion"/>
+                            <field name="duracion" widget="float_time"/>
                         </group>
                     </group>
                 </sheet>

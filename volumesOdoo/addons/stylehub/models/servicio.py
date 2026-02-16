@@ -22,4 +22,4 @@ class PeluqueriaServicio(models.Model):
     precio = fields.Float(string='Precio Base', required=True)
 
     # float para la diración del servicio en horas
-    duracion = fields.Float(string='Duración (Horas)', help="Ejemplo: 0.5 son 30 minutos")
+    duracion = fields.Float(string='Duración (Horas)')

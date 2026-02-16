@@ -82,7 +82,7 @@
                             <field name="lineas_ids">
                                 <list editable="bottom">
                                     <field name="servicio_id"/>
-                                    <field name="duracion" sum="Total Horas"/>
+                                    <field name="duracion" widget="float_time" sum="Total Horas"/>
                                     <field name="precio" sum="Total Precio"/>
                                 </list>
                             </field>
