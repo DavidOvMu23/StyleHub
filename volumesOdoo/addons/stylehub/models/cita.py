@@ -8,6 +8,7 @@ class StylehubCita(models.Model):
 
     _name = 'stylehub.cita'
     _description = 'Cita de Peluquería'
+    _rec_name = 'cliente_id'
 
     # RELACIONES (Many2one)
     # Vinculamos con el modelo de Contactos de Odoo (res.partner)
