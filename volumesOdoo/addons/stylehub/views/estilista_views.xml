@@ -2,8 +2,8 @@
 <odoo>
     
     <!-- Vista tipo lista de estilistas -->
-    <record id="view_stylehub_estilista_tree" model="ir.ui.view">
-        <field name="name">stylehub.estilista.tree</field>
+    <record id="view_stylehub_estilista_list" model="ir.ui.view">
+        <field name="name">stylehub.estilista.list</field>
         <field name="model">stylehub.estilista</field>
         <field name="arch" type="xml">
             <list>
@@ -25,7 +25,7 @@
                     <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" invisible="active"/>
                     <group>
                         <field name="name"/>
-                        <field name="active" invisible="1"/>
+                        <field name="active" widget="boolean_toggle"/>
                     </group>
                 </sheet>
             </form>
